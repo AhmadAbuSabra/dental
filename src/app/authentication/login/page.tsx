@@ -1,0 +1,89 @@
+"use client";
+import Link from "next/link";
+import { Grid, Box, Card, Stack, Typography } from "@mui/material";
+// components
+import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer";
+import Logo from "@/app/(DashboardLayout)/layout/shared/logo/Logo";
+import AuthLogin from "../auth/AuthLogin";
+
+const Login2 = () => {
+  return (
+    <PageContainer title="Login" description="this is Login page">
+      <Box
+        sx={{
+          position: "relative",
+          backgroundImage:
+            'url("/images/backgrounds/vecteezy_doctor-in-hospital-background-with-copy-space_.jpg")',
+          backgroundSize: "cover", // Image covers the entire container
+          backgroundPosition: "center", // Center the image
+          backgroundRepeat: "no-repeat", // Prevent repetition
+          height: "100vh", // Full viewport height
+          width: "100%", // Full width
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          overflow: "hidden",
+        }}
+      >
+        <Grid
+          container
+          spacing={0}
+          justifyContent="center"
+          sx={{ height: "100vh" }}
+        >
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            lg={4}
+            xl={3}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Card
+              elevation={9}
+              sx={{ p: 4, zIndex: 1, width: "100%", maxWidth: "500px" }}
+            >
+              <Box display="flex" alignItems="center" justifyContent="center">
+                {" "}
+                <Logo />
+              </Box>
+              <AuthLogin
+                subtitle={
+                  <Stack
+                    direction="row"
+                    spacing={1}
+                    justifyContent="center"
+                    mt={3}
+                  >
+                    <Typography
+                      color="textSecondary"
+                      variant="h6"
+                      fontWeight="500"
+                    >
+                      New?
+                    </Typography>
+                    <Typography
+                      component={Link}
+                      href="/authentication/register"
+                      fontWeight="500"
+                      sx={{
+                        textDecoration: "none",
+                        color: "primary.main",
+                      }}
+                    >
+                      Create an account
+                    </Typography>
+                  </Stack>
+                }
+              />
+            </Card>
+          </Grid>
+        </Grid>
+      </Box>
+    </PageContainer>
+  );
+};
+
+export default Login2;
