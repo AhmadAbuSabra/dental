@@ -25,6 +25,16 @@ import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer";
 
+// Define types for appointments
+type Appointment = {
+  date: string;
+  consultationNote: string;
+};
+
+type AppointmentsData = {
+  [key: number]: Appointment[];
+};
+
 // Sample data for patients
 const patients = [
   { id: 1, name: "John Doe", phone: "123-456-7890", lastProcedure: "Surgery" },
@@ -115,7 +125,7 @@ const patients = [
 ];
 
 // Sample appointments data for each patient
-const appointmentsData = {
+const appointmentsData: AppointmentsData = {
   1: [
     { date: "2023-09-10", consultationNote: "Follow-up after surgery" },
     { date: "2023-08-25", consultationNote: "Pre-surgery consultation" },
@@ -266,144 +276,94 @@ const TypographyPage = () => {
       >
         <TableHead>
           <TableRow>
-            <TableCell>
-              <Typography variant="subtitle2" fontWeight={600}>
-                Id
-              </Typography>
-            </TableCell>
-            <TableCell>
-              <Typography variant="subtitle2" fontWeight={600}>
-                Name
-              </Typography>
-            </TableCell>
-            <TableCell>
-              <Typography variant="subtitle2" fontWeight={600}>
-                Mobile Number
-              </Typography>
-            </TableCell>
-            <TableCell align="right">
-              <Typography variant="subtitle2" fontWeight={600}>
-                Last Procedure
-              </Typography>
-            </TableCell>
+            <TableCell>Id</TableCell>
+            <TableCell>Name</TableCell>
+            <TableCell>Phone</TableCell>
+            <TableCell>Last Procedure</TableCell>
+            <TableCell>Appointments</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {filteredPatients.map((patient) => (
-            <>
-              <TableRow
-                key={patient.id}
-                onClick={() => handleRowClick(patient.id)}
-                sx={{ cursor: "pointer" }}
-              >
+            <React.Fragment key={patient.id}>
+              <TableRow onClick={() => handleRowClick(patient.id)}>
+                <TableCell>{patient.id}</TableCell>
+                <TableCell>{patient.name}</TableCell>
+                <TableCell>{patient.phone}</TableCell>
+                <TableCell>{patient.lastProcedure}</TableCell>
                 <TableCell>
-                  <Typography sx={{ fontSize: "15px", fontWeight: "500" }}>
-                    {patient.id}
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography variant="subtitle2" fontWeight={600}>
-                    {patient.name}
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography
-                    color="textSecondary"
-                    variant="subtitle2"
-                    fontWeight={400}
-                  >
-                    {patient.phone}
-                  </Typography>
-                </TableCell>
-                <TableCell align="right">
-                  <Typography variant="h6">{patient.lastProcedure}</Typography>
+                  {appointmentsData[
+                    patient.id as keyof typeof appointmentsData
+                  ] &&
+                  appointmentsData[patient.id as keyof typeof appointmentsData]
+                    .length > 0
+                    ? "View"
+                    : "No Appointments"}
                 </TableCell>
               </TableRow>
               <TableRow>
-                <TableCell
-                  colSpan={4}
-                  style={{ paddingBottom: 0, paddingTop: 0 }}
-                >
-                  <Collapse
-                    in={expandedPatient === patient.id}
-                    timeout="auto"
-                    unmountOnExit
-                  >
-                    <Box sx={{ margin: 1 }}>
-                      <Typography variant="h6" gutterBottom>
-                        Appointments
-                      </Typography>
-                      <List>
-                        {appointmentsData[patient.id]?.map(
-                          (appointment, index) => (
-                            <ListItem key={index}>
-                              <ListItemText
-                                primary={`Date: ${appointment.date}`}
-                                secondary={`Consultation Note: ${appointment.consultationNote}`}
-                              />
-                            </ListItem>
-                          )
-                        ) || (
-                          <Typography variant="body2">
-                            No appointments available
-                          </Typography>
-                        )}
-                      </List>
-                    </Box>
+                <TableCell colSpan={5}>
+                  <Collapse in={expandedPatient === patient.id}>
+                    <List>
+                      {(
+                        appointmentsData[
+                          patient.id as keyof typeof appointmentsData
+                        ] || []
+                      ).map((appointment, index) => (
+                        <ListItem key={index}>
+                          <ListItemText
+                            primary={`Date: ${appointment.date}`}
+                            secondary={`Consultation Note: ${appointment.consultationNote}`}
+                          />
+                        </ListItem>
+                      ))}
+                    </List>
                   </Collapse>
                 </TableCell>
               </TableRow>
-            </>
+            </React.Fragment>
           ))}
         </TableBody>
       </Table>
 
       {/* Add Patient Dialog */}
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>
-          Add New Patient
-          <IconButton
-            edge="end"
-            color="inherit"
-            onClick={handleClose}
-            aria-label="close"
-            sx={{ position: "absolute", right: 8, top: 8 }}
-          >
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
+        <DialogTitle>Add New Patient</DialogTitle>
         <DialogContent>
           <form onSubmit={handleSubmit}>
-            <Box sx={{ mb: 3 }}>
-              <TextField
-                fullWidth
-                label="Id"
-                name="lastProcedure"
-                value={newPatient.lastProcedure}
-                onChange={handleChange}
-                sx={{ mb: 2 }}
-              />
-              <TextField
-                fullWidth
-                label="Name"
-                name="name"
-                value={newPatient.name}
-                onChange={handleChange}
-                sx={{ mb: 2 }}
-              />
-              <TextField
-                fullWidth
-                label="Mobile Number"
-                name="phone"
-                value={newPatient.phone}
-                onChange={handleChange}
-                sx={{ mb: 2 }}
-              />
-            </Box>
+            <TextField
+              label="Name"
+              name="name"
+              value={newPatient.name}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+              required
+            />
+            <TextField
+              label="Phone"
+              name="phone"
+              value={newPatient.phone}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+              required
+            />
+            <TextField
+              label="Last Procedure"
+              name="lastProcedure"
+              value={newPatient.lastProcedure}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+              required
+            />
             <DialogActions>
-              <Button onClick={handleClose}>Cancel</Button>
-              <Button type="submit" variant="contained" color="primary">
-                Add Patient
+              <Button onClick={handleClose} color="primary">
+                Cancel
+              </Button>
+              <Button type="submit" color="primary">
+                Add
               </Button>
             </DialogActions>
           </form>
