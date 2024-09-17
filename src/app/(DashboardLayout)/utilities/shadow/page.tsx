@@ -28,12 +28,19 @@ const patients = [
   { id: 13, name: "Anthony Walker", lastProcedure: "Eye Exam" },
 ];
 
+// Define the type for a patient
+interface Patient {
+  id: number;
+  name: string;
+  lastProcedure: string;
+}
+
 // Theme
 const lightTheme = createTheme({ palette: { mode: "light" } });
 
 const Shadow = () => {
   // Form state
-  const [selectedPatient, setSelectedPatient] = useState(null);
+  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
   const [consultationNotes, setConsultationNotes] = useState("");
 
   // Handle form submission
@@ -70,7 +77,9 @@ const Shadow = () => {
                   renderInput={(params) => (
                     <TextField {...params} label="Select Patient" required />
                   )}
-                  onChange={(event, newValue) => setSelectedPatient(newValue)}
+                  onChange={(event, newValue: Patient | null) =>
+                    setSelectedPatient(newValue)
+                  }
                   isOptionEqualToValue={(option, value) =>
                     option.id === value.id
                   }
