@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   Typography,
   Table,
@@ -246,34 +246,23 @@ const TypographyPage = () => {
           placeholder="Search by Id, Name, Phone, or Last Procedure"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          sx={{ width: "50%" }}
           InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon />
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton edge="end" aria-label="search">
+                  <SearchIcon />
+                </IconButton>
               </InputAdornment>
             ),
           }}
         />
         {/* Add Patient Button */}
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleOpen}
-          sx={{ alignSelf: "center" }}
-        >
+        <Button variant="contained" color="primary" onClick={handleOpen}>
           Add Patient
         </Button>
       </Box>
 
-      {/* Patient Table */}
-      <Table
-        aria-label="simple table"
-        sx={{
-          whiteSpace: "nowrap",
-          mt: 2,
-        }}
-      >
+      <Table sx={{ mt: 4 }}>
         <TableHead>
           <TableRow>
             <TableCell>Id</TableCell>
