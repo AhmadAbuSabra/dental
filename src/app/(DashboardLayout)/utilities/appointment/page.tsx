@@ -1,5 +1,5 @@
 "use client";
-import { useState, ChangeEvent } from "react";
+import { FC, useState, ChangeEvent } from "react";
 import {
   Box,
   Button,
@@ -32,7 +32,7 @@ const patients = [
   { id: 13, name: "Anthony Walker", lastProcedure: "Eye Exam" },
 ];
 
-const appointment = () => {
+const Appointment: FC = () => {
   const [appointmentDate, setAppointmentDate] = useState<Date | null>(
     new Date()
   );
@@ -140,4 +140,4 @@ const appointment = () => {
   );
 };
 
-export default appointment;
+export default Appointment;

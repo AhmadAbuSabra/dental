@@ -34,7 +34,7 @@ const paymentMethods = [
   { value: "insurance", label: "Insurance" },
 ];
 
-const payment = () => {
+const Payment = () => {
   const [selectedPatient, setSelectedPatient] = useState<{
     id: number;
     name: string;
@@ -131,4 +131,4 @@ const payment = () => {
   );
 };
 
-export default payment;
+export default Payment;
