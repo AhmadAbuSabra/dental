@@ -117,7 +117,8 @@ const CancelAppointment = () => {
                           onClick={() =>
                             handleCancel(patient.name, patient.appointmentDate)
                           }
-                          button
+                          // Wrapping ListItem in a Button if necessary
+                          component="div"
                         >
                           <ListItemText
                             primary={patient.name}
@@ -134,12 +135,13 @@ const CancelAppointment = () => {
                             variant="contained"
                             color="error"
                             disabled={!patient.hasAppointment}
-                            onClick={() =>
+                            onClick={(e) => {
+                              e.stopPropagation(); // Prevents triggering onClick on ListItem
                               handleCancel(
                                 patient.name,
                                 patient.appointmentDate
-                              )
-                            }
+                              );
+                            }}
                           >
                             Cancel
                           </Button>
